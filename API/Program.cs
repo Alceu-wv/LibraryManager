@@ -1,5 +1,4 @@
 using API;
-using API.Jwt;
 using Domain.Configuration;
 using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/* Bearer Token Config
+// Bearer Token Config
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue("TokenSecret", "HERE$IS$THE$SECRET"));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -32,38 +31,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddSingleton<Token>();
-*/
-// JWT
-var jwtSection = builder.Configuration.GetSection("JwtConfig");
-builder.Services.Configure<JwtConfig>(jwtSection);
-var jwtBearerTokenSettings = jwtSection.Get<JwtConfig>();
-var key = Encoding.ASCII.GetBytes(jwtBearerTokenSettings.SecretKey);
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtBearerTokenSettings.Issuer,
-        ValidAudience = jwtBearerTokenSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero,
-    };
-});
-builder.Services.AddSingleton<Token>();
-
-
-
 
 
 var app = builder.Build();

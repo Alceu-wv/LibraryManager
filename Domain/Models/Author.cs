@@ -17,7 +17,7 @@ namespace Domain.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-        public virtual ICollection<Book> Books { get; set; }
+        public List<Book> Books { get; set; }
 
         public Author(long id, string firstName, string lastName, string email, DateTime birthDate)
         {

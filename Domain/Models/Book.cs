@@ -17,15 +17,15 @@ namespace Domain.Models
         public string ISBN { get; set; }
         public string ReleaseYear { get; set; }
         public long AuthorId { get; set; }
-        public virtual Author Author { get; set; }
+        public List<Author> Authors { get; set; }
 
-        public Book(long id, string title, string iSBN, string releaseYear, long authorId)
+        public Book(long id, string title, string iSBN, string releaseYear, List<Author> authors)
         {
             Id = id;
             Title = title;
             ISBN = iSBN;
             ReleaseYear = releaseYear;
-            AuthorId = authorId;
+            Authors = authors;
         }
     }
 }

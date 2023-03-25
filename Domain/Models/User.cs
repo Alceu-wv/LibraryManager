@@ -17,6 +17,10 @@ namespace Domain.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; } = false;
+        public User()
+        {
+            IsAdmin = false;
+        }
 
         public User(long id, string name, string email, string password, bool isAdmin)
         {
