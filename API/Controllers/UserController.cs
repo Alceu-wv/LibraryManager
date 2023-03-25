@@ -10,10 +10,12 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly Token _token;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, Token token)
         {
             _userService = userService;
+            _token = token;
         }
 
         [HttpGet]
@@ -26,15 +28,14 @@ namespace API.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            var user = _userService.Login(request.Email, request.Password);
+            User user = _userService.Login(request.Email, request.Password);
 
             if (user == null)
             {
                 return Unauthorized();
             }
 
-            // TODO: Gerar token de autenticação e retornar para o cliente
-            return Ok();
+            return Ok(_token.GenerateToken(user));
         }
 
         [HttpPost("register")]

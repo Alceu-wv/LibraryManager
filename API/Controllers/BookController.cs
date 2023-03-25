@@ -1,9 +1,11 @@
 ﻿using Domain.Interfaces.Services;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class BookController : ControllerBase
@@ -15,6 +17,7 @@ namespace API.Controllers
             _bookService = bookService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllBooksAsync()
         {
